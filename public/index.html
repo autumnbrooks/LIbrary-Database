@@ -1,0 +1,39 @@
+<!--Basic Webiste layout to display information--> 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Library System</title>
+</head>
+<body>
+  <h1>Library Database</h1>
+
+  <section>
+    <h2>Available Books</h2>
+    <ul id="book-list"></ul>
+  </section>
+
+  <section>
+    <h2>Add New Member</h2>
+    <input id="member-name" placeholder="Name" />
+    <input id="member-email" placeholder="Email" />
+    <button onclick="addMember()">Add Member</button>
+  </section>
+
+  <section>
+    <h2>Borrow Book</h2>
+    <input id="borrow-member-id" placeholder="Member ID" />
+    <input id="borrow-book-id" placeholder="Book ID" />
+    <button onclick="borrowBook()">Borrow</button>
+  </section>
+
+  <section>
+    <h2>Return Book</h2>
+    <input id="return-book-id" placeholder="Book ID" />
+    <button onclick="returnBook()">Return</button>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
