@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library System</title>
+</head>
+<body>
+  <h1>Library Database</h1>
+
+  <section>
+    <h2>Available Books</h2>
+    <ul id="book-list"></ul>
+  </section>
+
+  <section>
+    <h2>Add New Member</h2>
+    <input id="member-name" placeholder="Name" />
+    <input id="member-email" placeholder="Email" />
+    <button onclick="addMember()">Add Member</button>
+  </section>
+
+  <section>
+    <h2>Borrow Book</h2>
+    <input id="borrow-member-id" placeholder="Member ID" />
+    <input id="borrow-book-id" placeholder="Book ID" />
+    <button onclick="borrowBook()">Borrow</button>
+  </section>
+
+  <section>
+    <h2>Return Book</h2>
+    <input id="return-book-id" placeholder="Book ID" />
+    <button onclick="returnBook()">Return</button>
+  </section>
+  
+<!-- NEW! Feeling Lucky button: User gets shown a random book in library on click, the year, title and genre is given -->
+  <section>
+    <h2>Feeling Lucky Get random book!</h2>
+    <button id="lucky-btn">Feeling Lucky</button>
+  
+    <div id="book-display">
+      <h3>Random Book:</h3>
+      <p id="book-title"></p>
+      <p id="book-genre"></p>
+      <p id="book-year"></p>
+    </div>
+  </section>
+  
+  <script src="app.js"></script>
+  <script>
+    document.getElementById('lucky-btn').addEventListener('click', () => {
+      fetch('http://localhost:3000/random-book')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('book-title').textContent = `Title: ${data.Title}`;
+          document.getElementById('book-genre').textContent = `Genre: ${data.Genre}`;
+          document.getElementById('book-year').textContent = `Year: ${data.Year}`;
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    });
+  </script>
+

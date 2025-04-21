@@ -70,7 +70,6 @@ FROM Members
 JOIN Borrow_Records ON Members.MemberID = Borrow_Records.MemberID
 WHERE Borrow_Records.BorrowDate BETWEEN '2025-04-01' AND '2025-04-30';
 
-
 INSERT INTO Members (Name, Email, MembershipDate)
 VALUES ('Bianca Morgan', 'bianca.morgan@gmail.com', '2025-04-14');
 
@@ -80,3 +79,46 @@ WHERE BookID = 101;
 
 DELETE FROM Borrow_Records
 WHERE RecordID = 1;
+
+-- 5 distinct advanced queries
+
+-- Collect numeber of books by each member, from highest to lowest amount
+SELECT m.Name, COUNT(br.BookID) AS TotalBooksBorrowed
+FROM Members m
+LEFT JOIN Borrow_Records br ON m.MemberID = br.MemberID
+GROUP BY m.MemberID, m.Name
+ORDER BY TotalBooksBorrowed DESC;
+
+-- Most borrowed book
+SELECT b.BookID, b.Title, COUNT(br.BookID) AS TimesBorrowed
+FROM Books b
+INNER JOIN Borrow_Records br ON b.BookID = br.BookID
+GROUP BY b.BookID, b.Title
+ORDER BY TimesBorrowed DESC
+LIMIT 1;
+
+-- Quantity of books borrowed per author
+SELECT a.AuthorName, COUNT(br.BookID) AS TotalBorrowed
+FROM Authors a
+LEFT JOIN Books b ON a.AuthorID = b.AuthorID
+LEFT JOIN Borrow_Records br ON b.BookID = br.BookID
+GROUP BY a.AuthorID, a.AuthorName
+ORDER BY TotalBorrowed DESC;
+
+-- All possible member and book combinations
+SELECT m.Name AS MemberName, b.Title AS BookTitle
+FROM Members m
+CROSS JOIN Books b
+ORDER BY m.Name, b.Title;
+
+-- Join tables to find authors of books borrowed by specific members
+SELECT m.Name AS MemberName, 
+       b.Title AS BookTitle, 
+       (SELECT a.AuthorName 
+        FROM Authors a 
+        WHERE a.AuthorID = b.AuthorID) AS AuthorName
+FROM Books b
+JOIN Borrow_Records br ON b.BookID = br.BookID
+JOIN Members m ON br.MemberID = m.MemberID
+ORDER BY m.Name, b.Title;
+

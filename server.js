@@ -9,6 +9,22 @@ const db = new sqlite3.Database('./library.db');
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
+//NEW: for feeling lucky button, gets the title, genre, and year from random book in library
+app.get('/random-book', (req, res) => {
+  db.get(`
+    SELECT Books.Title, Books.Genre, Books.Year
+    FROM Books
+    ORDER BY RANDOM() 
+    LIMIT 1
+  `, [], (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(row);
+  });
+});
+
+
 //Get books list
 app.get('/books', (req, res) => {
   db.all(`
@@ -65,6 +81,9 @@ app.post('/return', (req, res) => {
     res.json({ updated: this.changes });
   });
 });
+
+
+
 
 app.listen(3000, () => {
   console.log('Server running at http://localhost:3000');
